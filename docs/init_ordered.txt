@@ -1,0 +1,116 @@
+תכנית מפורטת ומסודרת לפיתוח אפליקציית Web להשוואת קבצים (Diff Tool) – אלטרנטיבה חינמית ל-Araxis Merge
+1. הוראות כלליות לפיתוח (לשלוח ל-AI)
+
+סידור ראשוני: סדר את כל המידע בנקודות לתכנון ושים בתיקיית docs/ בקובץ PLAN.md או INSTRUCTIONS.md.
+תהליך פיתוח: בנה את הפרויקט מההתחלה ועד הסוף – כולל בדיקות מלאות ואיכות גבוהה.
+תיעוד: בכל אזור/מודול מורכב – הוסף README.md. השתמש ב-Mermaid diagrams להמחשת flow, architecture ו-data flow.
+Dev Environment:
+.gitignore מקיף.
+Makefile עם make dev (יריץ make setup אם צריך להתקין דברים).
+make setup יוודא התקנת תלויות, סביבה וכו'.
+
+סגנון קוד:
+נקי, מודולרי, קל לתחזוקה.
+ביצועים גבוהים, קבצים קטנים וממוקדים במשימה אחת.
+שימוש ב-Utils פנימיים כדי להימנע מחזרות.
+הערות ברורות במקומות מורכבים.
+
+
+2. השראה ופיצ'רים מרכזיים (Araxis Merge + Mergely)
+
+כלי מקצועי להשוואת קבצי טקסט, קוד, תמונות, בינארי, תיקיות.
+תמיכה ב-2-way ו-3-way merge.
+השוואה ויזואלית ברורה עם צבעים, חצים למיזוג, סינכרון גלילה.
+השוואת תיאורי משרה, חוזים, JSON, קבצי Office.
+תמיכה בקבצים גדולים, ארכיונים (TAR/TGZ/ZIP).
+גילוי שינויים סמנטיים (לא רק שורה-שורה).
+UI/UX מקצועי: Side-by-side, Inline, Minimap, חיפוש, היסטוריה.
+
+3. טכנולוגיות מומלצות (MVP + Scalability)
+
+Frontend: Vanilla JS + HTML5 + CSS (או React/Vue + TypeScript אם צריך). Monaco Editor או CodeMirror 6 לעריכה.
+Backend (לעיבוד כבד): Python (MVP) או Go/Rust (פרודקשן) – למהירות עם קבצים גדולים.
+תקשורת: WebSockets (ל-streaming), REST API.
+Web Workers לעיבודים שלא תוקעים את הדפדפן.
+ספריות מינימליות: difflib (Python), Pillow (תמונות), tarfile/zipfile מובנים.
+
+4. מנוע Diff – אלגוריתמים חזקים
+
+Myers Diff + Patience Diff – בסיס לטקסט וקוד.
+Word-level / Character-level Diff – בתוך שורות משתנות (למשל תיאורי משרה).
+Moved Lines Detection – שורות שהוזזו (צבע כחול) באמצעות Levenshtein Distance / Cosine Similarity (threshold ~80%).
+Semantic Diff – טבלת נרדפות (Synonyms) לזיהוי שינויים משמעותיים (צהוב).
+Early Exit – חישוב SHA-256 ראשוני בדפדפן. אם זהים – עצור מיד והסבר.
+Ignore Options (Toggles):
+Whitespace
+Case sensitivity
+Comments
+Timestamps, version keywords
+
+JSON Structural Diff – השוואת schema בלבד (ללא ערכים).
+
+5. פיצ'רים מרכזיים – UI/UX
+
+מסך השוואת טקסט:
+Side-by-side + Inline View.
+גלילה סינכרונית חכמה (עם padding דינמי).
+Minimap + ניווט מהיר לשינויים.
+חצי מיזוג (→ ←) + Download Merged File.
+Line numbers, צבעים: Added (ירוק), Removed (אדום), Modified (צהוב), Moved (כחול).
+
+חיפוש:
+חיפוש בכל חלון + Regex.
+היסטוריית חיפוש + ספירת תוצאות.
+
+השוואת תיקיות:
+עץ תיקיות (Directory Tree) כמו Explorer.
+סימון: חדש/נמחק/שונה.
+פילטרים: רק שינויים, לפי סיומת.
+Double-click לפתיחת קובץ להשוואה.
+
+תמיכה בקבצים:
+טקסט, JSON, MD, Code.
+Office: DOCX, XLSX (טבלה דמוית Excel), PDF.
+Binary – Hex view.
+תמונות: Highlight אזורים שהשתנו (Toggle), סטגנוגרפיה (LSB/RGB analysis).
+
+ארכיונים: TAR/TGZ/ZIP – streaming בלי לשמור לדיסק.
+תצוגה: RTL/LTR toggle, Themes (Light + Dark + Custom).
+ניקוי: הסרת תווים Unicode מיוחדים (Regex [^\x00-\x7f]).
+Duplicate Detection.
+
+6. פיצ'רים מתקדמים / SecOps
+
+Homograph Attack Detection (Punycode/IDN) – זיהוי תווים מתחזים ב-URL.
+Secret & Config Diff – זיהוי שינויים ב-.env, YAML, IP, keys.
+Stenography Detection: Entropy test על LSB bits, XOR payload.
+3-Way Merge.
+Git Integration – השוואת commits.
+Batch Mode + דו"ח.
+AI Assistance (עתידי) – Ollama להסבר שינויים.
+Performance:
+Chunking לקבצים >100MB.
+Parallel processing.
+Streaming.
+
+
+7. שקיפות למשתמש (Summary Dashboard)
+
+"הקבצים זהים" + הסבר SHA-256 + זמן ביצוע (performance.now()).
+Meta-info: גודל קבצים, ספירת שורות/מילים, סיכום שינויים.
+הסבר "למה" בכל שלב.
+
+8. Roadmap לפיתוח (שלבים)
+
+מנוע ליבה (Diff + Patience + Word-level).
+UI/UX (Monaco/CodeMirror + סינכרון + Themes).
+Backend (Python/Go + קבצים גדולים + Streaming).
+תמונות + סטגנוגרפיה + ארכיונים.
+תיקיות + Office + פיצ'רים מתקדמים.
+
+9. דרישות נוספות
+
+תמיכה בקידודים שונים (UTF-8, Windows-1255).
+בדיקות עם קבצים גדולים (10MB+), JSON, תמונות עם stego.
+קוד נקי, מתועד, קל לתרומה.
+גרסה מקומית חינמית (ללא תשלום).
