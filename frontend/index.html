@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Diffinity — Professional file comparison tool. Compare text, code, JSON, images, archives and more." />
+  <title>Diffinity — File Comparison</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="public/css/base.css" />
+  <link rel="stylesheet" href="public/css/layout.css" />
+  <link rel="stylesheet" href="public/css/diff.css" />
+
+  <!-- Inline component button styles (kept minimal) -->
+  <style>
+    .btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-size: var(--font-size-sm);
+      font-family: var(--font-ui);
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--color-surface-2); border-color: var(--color-accent); }
+    .btn.active { background: var(--color-accent-light); border-color: var(--color-accent); color: var(--color-accent); }
+    .btn.btn-primary { background: var(--color-accent); color: #fff; border-color: transparent; }
+    .btn.btn-primary:hover { background: var(--color-accent-hover); }
+    .btn-icon { padding: 4px 6px; }
+    .btn-sm { padding: 2px 7px; font-size: 11px; }
+    .btn-toggle { opacity: .7; }
+    .btn-toggle.active { opacity: 1; }
+
+    /* Drag-over state */
+    .panel.drag-over { outline: 2px dashed var(--color-accent); outline-offset: -2px; }
+
+    /* Textarea wrapper */
+    .panel-textarea {
+      resize: none; width: 100%; height: 100%;
+      border: none; outline: none;
+      font-family: var(--font-mono);
+      font-size: var(--font-size-md);
+      line-height: var(--line-height);
+      padding: 8px 12px;
+      background: var(--color-surface);
+      color: var(--color-text);
+      tab-size: 2;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--color-border);
+      border-top-color: var(--color-accent);
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Welcome screen inside panel */
+    .welcome {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; gap: 12px; color: var(--color-text-muted);
+      font-size: var(--font-size-sm); text-align: center; padding: 32px;
+    }
+    .welcome h2 { font-size: 18px; color: var(--color-text); font-weight: 600; margin-bottom: 4px; }
+    .welcome kbd {
+      display: inline-block;
+      padding: 1px 5px; border-radius: 3px;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      font-family: var(--font-mono); font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- ── Header ── -->
+  <header id="header" role="banner">
+    <div class="logo">diff<span>inity</span></div>
+    <nav class="tabs" role="tablist" aria-label="Comparison mode">
+      <button class="tab active" role="tab" aria-selected="true"  data-tab="text">Text / Code</button>
+      <button class="tab"        role="tab" aria-selected="false" data-tab="json">JSON</button>
+      <button class="tab"        role="tab" aria-selected="false" data-tab="folder">Folder / Archive</button>
+      <button class="tab"        role="tab" aria-selected="false" data-tab="image">Image</button>
+    </nav>
+    <div class="spacer"></div>
+    <div class="header-actions">
+      <a href="docs/PLAN.md"         target="_blank" style="color: var(--color-text-faint); font-size:12px; text-decoration:none;">Docs</a>
+      <a href="http://localhost:8000/api/docs" target="_blank" style="color: var(--color-text-faint); font-size:12px; text-decoration:none; margin-left:10px;">API</a>
+    </div>
+  </header>
+
+  <!-- ── Toolbar ── -->
+  <div id="toolbar" role="toolbar" aria-label="Comparison controls"></div>
+
+  <!-- ── Main area (panels injected by app.js) ── -->
+  <main id="main" role="main"></main>
+
+  <!-- ── Status bar ── -->
+  <footer id="statusbar" role="status" aria-live="polite">
+    <span class="statusbar-item">Ready — paste text or open files to compare</span>
+  </footer>
+
+</div>
+
+<!-- ES module entry point -->
+<script type="module" src="src/app.js"></script>
+</body>
+</html>

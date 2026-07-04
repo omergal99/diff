@@ -1,0 +1,193 @@
+/* =========================================================
+   Diffinity — Base CSS: variables, reset, typography
+   All colours are CSS variables → theming is free.
+   ========================================================= */
+
+/* ── Light Theme (default) ── */
+:root {
+  --color-bg:           #f8f9fa;
+  --color-surface:      #ffffff;
+  --color-surface-2:    #f1f3f5;
+  --color-border:       #dee2e6;
+  --color-border-light: #e9ecef;
+  --color-text:         #212529;
+  --color-text-muted:   #6c757d;
+  --color-text-faint:   #adb5bd;
+
+  /* Toolbar / header */
+  --color-header-bg:    #1a1d23;
+  --color-header-text:  #e9ecef;
+
+  /* Accent */
+  --color-accent:       #2b6cb0;
+  --color-accent-hover: #2c5282;
+  --color-accent-light: #ebf4ff;
+
+  /* Diff colours */
+  --color-added-bg:     #e6ffed;
+  --color-added-text:   #22543d;
+  --color-added-border: #34d058;
+
+  --color-deleted-bg:   #ffeef0;
+  --color-deleted-text: #86181d;
+  --color-deleted-border: #f97583;
+
+  --color-modified-bg:  #fffbdd;
+  --color-modified-text:#735c0f;
+  --color-modified-border: #e3b341;
+
+  --color-moved-bg:     #e8f0fe;
+  --color-moved-text:   #1a237e;
+  --color-moved-border: #4a90d9;
+
+  --color-semantic-bg:  #fff3e0;
+  --color-semantic-text:#e65100;
+  --color-semantic-border: #fb8c00;
+
+  --color-alert-bg:     #f3e5f5;
+  --color-alert-text:   #6a1b9a;
+  --color-alert-border: #ab47bc;
+
+  /* Word-level inline highlights */
+  --color-word-insert:  #acf2bd;
+  --color-word-delete:  #fdb8c0;
+
+  /* Gutter */
+  --color-gutter-bg:    #f1f3f5;
+  --color-gutter-text:  #6c757d;
+  --color-gutter-width: 48px;
+
+  /* Minimap */
+  --color-minimap-bg:   #e9ecef;
+  --color-minimap-w:    8px;
+
+  /* Misc */
+  --radius:        4px;
+  --radius-lg:     8px;
+  --shadow-sm:     0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:     0 4px 12px rgba(0,0,0,.12);
+  --font-mono:     "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, "SFMono-Regular", monospace;
+  --font-ui:       "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-size-sm:  12px;
+  --font-size-md:  13px;
+  --font-size-lg:  14px;
+  --line-height:   1.5;
+  --transition:    120ms ease;
+}
+
+/* ── Dark Theme ── */
+[data-theme="dark"] {
+  --color-bg:           #0d1117;
+  --color-surface:      #161b22;
+  --color-surface-2:    #21262d;
+  --color-border:       #30363d;
+  --color-border-light: #21262d;
+  --color-text:         #c9d1d9;
+  --color-text-muted:   #8b949e;
+  --color-text-faint:   #484f58;
+
+  --color-header-bg:    #010409;
+  --color-header-text:  #c9d1d9;
+
+  --color-accent:       #58a6ff;
+  --color-accent-hover: #79b8ff;
+  --color-accent-light: #1c2a3d;
+
+  --color-added-bg:     #0d4429;
+  --color-added-text:   #56d364;
+  --color-added-border: #238636;
+
+  --color-deleted-bg:   #3d0814;
+  --color-deleted-text: #f85149;
+  --color-deleted-border:#da3633;
+
+  --color-modified-bg:  #2d2a00;
+  --color-modified-text:#e3b341;
+  --color-modified-border:#bb8009;
+
+  --color-moved-bg:     #0c1f3d;
+  --color-moved-text:   #79b8ff;
+  --color-moved-border: #1f6feb;
+
+  --color-semantic-bg:  #2a1800;
+  --color-semantic-text:#ffa657;
+  --color-semantic-border:#d18616;
+
+  --color-alert-bg:     #2a0040;
+  --color-alert-text:   #d2a8ff;
+  --color-alert-border: #8957e5;
+
+  --color-word-insert:  #1a4d2e;
+  --color-word-delete:  #4d1a21;
+
+  --color-gutter-bg:    #161b22;
+  --color-gutter-text:  #484f58;
+  --color-minimap-bg:   #21262d;
+}
+
+/* ── High Contrast Theme ── */
+[data-theme="high-contrast"] {
+  --color-bg:           #000000;
+  --color-surface:      #0a0a0a;
+  --color-surface-2:    #111111;
+  --color-border:       #ffffff;
+  --color-text:         #ffffff;
+  --color-text-muted:   #cccccc;
+  --color-accent:       #ffff00;
+  --color-added-bg:     #003300;
+  --color-added-text:   #00ff00;
+  --color-deleted-bg:   #330000;
+  --color-deleted-text: #ff0000;
+  --color-modified-bg:  #333300;
+  --color-modified-text:#ffff00;
+  --color-moved-bg:     #000033;
+  --color-moved-text:   #00ccff;
+  --color-word-insert:  #005500;
+  --color-word-delete:  #550000;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background: var(--color-bg);
+  overflow: hidden; /* app manages its own scroll */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* RTL support */
+[dir="rtl"] { direction: rtl; }
+[dir="ltr"] { direction: ltr; }
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-surface-2); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* Utility: visually hidden (accessible) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* Utility: monospace text */
+.mono { font-family: var(--font-mono); }
+
+/* Animations */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in { animation: fadeIn 150ms ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } }
+}

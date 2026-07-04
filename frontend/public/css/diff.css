@@ -1,0 +1,211 @@
+/* =========================================================
+   Diffinity — Diff-specific styles: lines, words, minimap
+   ========================================================= */
+
+/* ── Line types ── */
+.line { display: flex; min-height: 20px; position: relative; }
+.line-content {
+  flex: 1;
+  padding: 0 8px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 20px;
+}
+
+/* Equal */
+.line.equal .line-content { background: transparent; }
+
+/* Added */
+.line.added .line-content   { background: var(--color-added-bg); color: var(--color-added-text); }
+.line.added .gutter-line    { background: var(--color-added-bg); color: var(--color-added-border); }
+
+/* Deleted */
+.line.deleted .line-content { background: var(--color-deleted-bg); color: var(--color-deleted-text); }
+.line.deleted .gutter-line  { background: var(--color-deleted-bg); color: var(--color-deleted-border); }
+
+/* Modified */
+.line.modified .line-content{ background: var(--color-modified-bg); }
+.line.modified .gutter-line { background: var(--color-modified-bg); color: var(--color-modified-border); }
+
+/* Moved */
+.line.moved .line-content   { background: var(--color-moved-bg); color: var(--color-moved-text); }
+.line.moved .gutter-line    { background: var(--color-moved-bg); color: var(--color-moved-border); }
+
+/* Semantic change */
+.line.semantic .line-content{ background: var(--color-semantic-bg); color: var(--color-semantic-text); }
+
+/* Alert / suspicious */
+.line.alert .line-content   { background: var(--color-alert-bg); color: var(--color-alert-text); }
+
+/* ── Word-level inline highlights ── */
+.word-insert {
+  background: var(--color-word-insert);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.word-delete {
+  background: var(--color-word-delete);
+  border-radius: 2px;
+  padding: 0 1px;
+  text-decoration: line-through;
+  opacity: .8;
+}
+
+.word-semantic {
+  background: var(--color-semantic-bg);
+  border-bottom: 2px solid var(--color-semantic-border);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.word-alert {
+  background: var(--color-alert-bg);
+  border-bottom: 2px solid var(--color-alert-border);
+  border-radius: 2px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Search highlight ── */
+.search-match {
+  background: #ffe082;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.search-match.current {
+  background: #ff6f00;
+  color: #fff;
+}
+
+/* ── Moved line connector badge ── */
+.moved-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--color-moved-bg);
+  color: var(--color-moved-text);
+  border: 1px solid var(--color-moved-border);
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: help;
+}
+
+/* ── Change type indicator bar (left side) ── */
+.line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.line.added::before    { background: var(--color-added-border); }
+.line.deleted::before  { background: var(--color-deleted-border); }
+.line.modified::before { background: var(--color-modified-border); }
+.line.moved::before    { background: var(--color-moved-border); }
+.line.semantic::before { background: var(--color-semantic-border); }
+.line.alert::before    { background: var(--color-alert-border); }
+
+/* ── Merge arrow button ── */
+.merge-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius);
+  font-size: 12px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.merge-arrow:hover {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+/* ── Minimap segments ── */
+.minimap-added    { background: var(--color-added-border); opacity: .9; }
+.minimap-deleted  { background: var(--color-deleted-border); opacity: .9; }
+.minimap-modified { background: var(--color-modified-border); opacity: .9; }
+.minimap-moved    { background: var(--color-moved-border); opacity: .9; }
+.minimap-viewport {
+  position: absolute;
+  left: 0; right: 0;
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.4);
+  pointer-events: none;
+}
+
+/* ── Fold (collapsed equal region) ── */
+.fold-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 24px;
+  background: var(--color-surface-2);
+  border-top: 1px dashed var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.fold-marker:hover { background: var(--color-accent-light); color: var(--color-accent); }
+
+/* ── Image diff overlay ── */
+.img-diff-region {
+  position: absolute;
+  border: 2px solid var(--color-deleted-border);
+  pointer-events: none;
+}
+
+.img-diff-region.toggle-on { border-color: var(--color-alert-border); background: rgba(171,71,188,.15); }
+
+/* ── Alerts ── */
+.alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: 1px solid;
+  margin: 8px 12px;
+  font-size: var(--font-size-sm);
+}
+
+.alert-banner.warning {
+  background: var(--color-alert-bg);
+  color: var(--color-alert-text);
+  border-color: var(--color-alert-border);
+}
+
+.alert-banner.success {
+  background: var(--color-added-bg);
+  color: var(--color-added-text);
+  border-color: var(--color-added-border);
+}
+
+.alert-banner.info {
+  background: var(--color-moved-bg);
+  color: var(--color-moved-text);
+  border-color: var(--color-moved-border);
+}
+
+/* ── Animations ── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .5; }
+  }
+}
