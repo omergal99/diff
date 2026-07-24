@@ -25,12 +25,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Pages
+        id: configure_pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./diff/frontend
+          path: ./frontend
 
       - name: Deploy to GitHub Pages
         id: deployment
