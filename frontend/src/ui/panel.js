@@ -37,7 +37,7 @@ function syncScroll(sourceEl, targetEl) {
 function buildWordHtml(wordOps) {
   if (!wordOps?.length) return null;
   return wordOps.map(op => {
-    const text = escapeHtml(op.text);
+    const text = escapeHtml(op.text ?? '');
     if (op.op === 'equal')  return text;
     if (op.op === 'insert') return `<span class="word-insert">${text}</span>`;
     if (op.op === 'delete') return `<span class="word-delete">${text}</span>`;

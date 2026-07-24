@@ -47,6 +47,14 @@ Then open **http://localhost:3000** in your browser.
 
 > The backend API is at **http://localhost:8000** (docs at `/api/docs`).
 
+## 🌐 GitHub Pages deployment
+
+The frontend can be published directly to GitHub Pages from the [frontend](frontend) folder. A workflow is included at [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml) so each push to `main` publishes the app automatically.
+
+Once enabled in GitHub repository settings, the site will be available at:
+
+https://omergal99.github.io/diff/
+
 ---
 
 ## 📋 Requirements

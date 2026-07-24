@@ -25,7 +25,10 @@ import { countLines, countWords } from './utils/format.js';
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const LARGE_FILE_THRESHOLD = 2 * 1024 * 1024; // 2 MB → use backend
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = (typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+  ? 'http://localhost:8000'
+  : '';
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
@@ -63,6 +66,15 @@ async function init() {
 
   // Meta bar (just above main panels)
   initMetaBar(main);
+
+  const apiLink = document.getElementById('api-link');
+  if (apiLink) {
+    if (BACKEND_URL) {
+      apiLink.href = `${BACKEND_URL}/api/docs`;
+    } else {
+      apiLink.style.display = 'none';
+    }
+  }
 
   // Toolbar
   initToolbar(toolbar);
@@ -207,11 +219,17 @@ async function init() {
 
       // ── Choose engine ──
       const useBackend = textA.length > LARGE_FILE_THRESHOLD || textB.length > LARGE_FILE_THRESHOLD;
-      let result;
+      let result = null;
 
-      if (useBackend) {
-        result = await diffViaBackend(textA, textB);
-      } else {
+      if (useBackend && BACKEND_URL) {
+        try {
+          result = await diffViaBackend(textA, textB);
+        } catch (err) {
+          console.warn('Backend unavailable, falling back to client-side diffing.', err);
+        }
+      }
+
+      if (!result) {
         const linesA = textA.split('\n');
         const linesB = textB.split('\n');
         result = computeDiff(linesA, linesB, state.options);
@@ -238,6 +256,8 @@ async function init() {
   }
 
   async function diffViaBackend(textA, textB) {
+    if (!BACKEND_URL) throw new Error('Backend is unavailable in this deployment.');
+
     const resp = await fetch(`${BACKEND_URL}/api/diff/text`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

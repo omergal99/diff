@@ -117,11 +117,17 @@ export function wordDiff(lineA, lineB) {
   const tB = tokenize(lineB);
   const rawOps = myersDiff(tA, tB);
   const ops = [];
+
   for (const { op, indexA, indexB } of rawOps) {
-    if (op === 'equal')  ops.push({ op: 'equal',  text: tA[indexA] });
-    if (op === 'delete') ops.push({ op: 'delete', text: tA[indexA] });
-    if (op === 'insert') ops.push({ op: 'insert', text: tB[indexB] });
+    if (op === 'equal') {
+      ops.push({ op: 'equal', text: tA[indexA] ?? '' });
+    } else if (op === 'delete') {
+      ops.push({ op: 'delete', text: (indexA != null && indexA >= 0) ? (tA[indexA] ?? '') : '' });
+    } else if (op === 'insert') {
+      ops.push({ op: 'insert', text: (indexB != null && indexB >= 0) ? (tB[indexB] ?? '') : '' });
+    }
   }
+
   return ops;
 }
 
